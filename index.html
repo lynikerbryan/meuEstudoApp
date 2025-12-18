@@ -1,41 +1,41 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-
-<meta charset="UTF-8" />
-<title>Study Tracker Concurso</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<style>
-body { font-family: Arial, sans-serif; margin: 20px; }
-h1 { margin-bottom: 10px; }
-section { margin-bottom: 30px; }
-input, button { padding: 8px; margin: 5px 0; width: 100%; }
-ul { list-style: none; padding: 0; }
-li { background: #f4f4f4; margin-bottom: 8px; padding: 10px; }
-</style>
+  <meta charset="UTF-8" />
+  <title>Study Tracker Concurso</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { margin-bottom: 10px; }
+    section { margin-bottom: 30px; }
+    input, button { padding: 8px; margin: 5px 0; width: 100%; }
+    ul { list-style: none; padding: 0; }
+    li { background: #f4f4f4; margin-bottom: 8px; padding: 10px; }
+  </style>
 </head>
 <body>
 
-
 <h1>📚 Study Tracker</h1>
 
-
 <section>
-<h2>Novo Estudo</h2>
-<input type="date" id="date" />
-<input type="text" id="topic" placeholder="Tópico estudado" />
-<input type="number" id="questions" placeholder="Questões resolvidas" />
-<button onclick="addStudy()">Salvar</button>
+  <h2>Novo Estudo</h2>
+  <input type="date" id="date" />
+  <input type="text" id="topic" placeholder="Tópico estudado" />
+  <input type="number" id="questions" placeholder="Questões resolvidas" />
+  <button onclick="addStudy()">Salvar</button>
 </section>
 
-
 <section>
-<h2>📅 Revisões de Hoje</h2>
-<ul id="today"></ul>
+  <h2>📅 Revisões de Hoje</h2>
+  <ul id="today"></ul>
 </section>
 
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
 <script src="firebase.js"></script>
 <script src="app.js"></script>
+
 </body>
 </html>
