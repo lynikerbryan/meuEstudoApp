@@ -1,17 +1,12 @@
 const intervals = [1, 7, 15, 30, 60, 90];
 
 
-function loadData() {
-return JSON.parse(localStorage.getItem('studies') || '[]');
+function today() {
+return new Date().toISOString().split('T')[0];
 }
 
 
-function saveData(data) {
-localStorage.setItem('studies', JSON.stringify(data));
-}
-
-
-function addStudy() {
+async function addStudy() {
 const date = document.getElementById('date').value || today();
 const topic = document.getElementById('topic').value;
 const questions = Number(document.getElementById('questions').value);
@@ -20,23 +15,23 @@ const questions = Number(document.getElementById('questions').value);
 if (!topic) return alert('Informe o tópico');
 
 
-const study = { date, topic, questions, revisions: [] };
-
-
-intervals.forEach(days => {
+const revisions = intervals.map(days => {
 const d = new Date(date);
 d.setDate(d.getDate() + days);
-study.revisions.push({
+return {
 date: d.toISOString().split('T')[0],
 interval: days,
 done: false
-});
+};
 });
 
 
-const data = loadData();
-data.push(study);
-saveData(data);
+await db.collection('studies').add({
+date,
+topic,
+questions,
+revisions
+});
 
 
 document.getElementById('topic').value = '';
@@ -47,18 +42,18 @@ renderToday();
 }
 
 
-function today() {
-return new Date().toISOString().split('T')[0];
-}
-
-
-function renderToday() {
+async function renderToday() {
 const ul = document.getElementById('today');
 ul.innerHTML = '';
-const data = loadData();
 
 
-data.forEach(study => {
+const snapshot = await db.collection('studies').get();
+
+
+snapshot.forEach(doc => {
+const study = doc.data();
+
+
 study.revisions
 .filter(r => r.date === today() && !r.done)
 .forEach(r => {
@@ -68,9 +63,11 @@ li.innerHTML = `
 Revisão ${r.interval} dias
 <br><button>Marcar como feita</button>
 `;
-li.querySelector('button').onclick = () => {
+li.querySelector('button').onclick = async () => {
 r.done = true;
-saveData(data);
+await db.collection('studies').doc(doc.id).update({
+revisions: study.revisions
+});
 renderToday();
 };
 ul.appendChild(li);
