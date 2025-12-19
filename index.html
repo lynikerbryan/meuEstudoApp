@@ -16,8 +16,11 @@
 </head>
 <body>
 
-<button onclick="login()">Login com Google</button>
-<button onclick="logout()">Logout</button>
+<div style="margin-bottom:15px;">
+<button id="loginBtn" onclick="login()">Login com Google</button>
+<button id="logoutBtn" onclick="logout()" style="display:none">Logout</button>
+<div id="loginStatus" style="margin-top:5px;font-size:14px;"></div>
+</div>
 <h1>📚 Study Tracker</h1>
 
 <section>

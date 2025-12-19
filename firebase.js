@@ -25,7 +25,24 @@ return;
 
 
 currentUser = user;
-document.body.classList.toggle('logged', !!user);
+
+
+const loginBtn = document.getElementById('loginBtn');
+const logoutBtn = document.getElementById('logoutBtn');
+const status = document.getElementById('loginStatus');
+
+
+if (user) {
+loginBtn.style.display = 'none';
+logoutBtn.style.display = 'inline-block';
+status.innerText = `Logado como ${user.email}`;
+} else {
+loginBtn.style.display = 'inline-block';
+logoutBtn.style.display = 'none';
+status.innerText = 'Não logado';
+}
+
+
 renderToday();
 });
 
