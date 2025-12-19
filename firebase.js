@@ -12,10 +12,18 @@ const auth = firebase.auth();
 const provider = new firebase.auth.GoogleAuthProvider();
 
 
+const ALLOWED_EMAIL = 'lyniker.bryan@gmail.com';
 let currentUser = null;
 
 
 auth.onAuthStateChanged(user => {
+if (user && user.email !== ALLOWED_EMAIL) {
+alert('Acesso não autorizado');
+auth.signOut();
+return;
+}
+
+
 currentUser = user;
 document.body.classList.toggle('logged', !!user);
 renderToday();
