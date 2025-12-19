@@ -21,12 +21,16 @@ async function addStudy() {
     };
   });
 
-  await db.collection('studies').add({
-    date,
-    topic,
-    questions,
-    revisions
-  });
+const col = userCollection();
+if (!col) return alert('Faça login primeiro');
+
+
+await col.add({
+date,
+topic,
+questions,
+revisions
+});
 
   document.getElementById('topic').value = '';
   document.getElementById('questions').value = '';
@@ -38,7 +42,8 @@ async function renderToday() {
   const ul = document.getElementById('today');
   ul.innerHTML = '';
 
-  const snapshot = await db.collection('studies').get();
+  if (!currentUser) return;
+  const snapshot = await userCollection().get();
 
   snapshot.forEach(doc => {
     const study = doc.data();
@@ -54,14 +59,21 @@ async function renderToday() {
         `;
         li.querySelector('button').onclick = async () => {
           r.done = true;
-          await db.collection('studies').doc(doc.id).update({
-            revisions: study.revisions
-          });
+          await userCollection().doc(doc.id).update({
+		  revisions: study.revisions
+		  });
           renderToday();
         };
         ul.appendChild(li);
       });
   });
+}
+
+function userCollection() {
+if (!currentUser) return null;
+return db.collection('users')
+.doc(currentUser.uid)
+.collection('studies');
 }
 
 renderToday();
